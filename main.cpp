@@ -9,8 +9,8 @@ using namespace std;
 /**
  * Question 1.1
  * is_unique detects if all characters in a string are unique.
- * @param str
- * @return bool
+ * @param str: string to test uniqueness of characters
+ * @return bool: true if unique/ false otherwise
  */
 bool is_unique(string& str) {
     /**
@@ -50,7 +50,7 @@ bool is_unique(string& str) {
  * Assumes equal length strings
  * @param str1: first string
  * @param str2: second string
- * @return bool
+ * @return bool: true if strings contains same characters/ false otherwise
  */
 bool check_permutation(string& str1, string& str2) {
     /** Approach 1: Sort
@@ -87,7 +87,7 @@ bool check_permutation(string& str1, string& str2) {
  * URLify encodes spaces to %20
  * @param str: input string
  * @param true_length: true length of string
- * @return string
+ * @return string: URL encoded string
  */
 string urlify(string& str, int true_length) {
     int spaces = 0, new_length;
@@ -118,8 +118,8 @@ string urlify(string& str, int true_length) {
  * Assumes lowercase string
  * Time complexity: O(N)
  * Space complexity: O(1)
- * @param str
- * @return bool
+ * @param str: test string
+ * @return bool: if string reads same from both ends
  */
 bool is_palindrome(string& str) {
     int spaces = 0;
@@ -137,6 +137,62 @@ bool is_palindrome(string& str) {
     return true;
 }
 
+
+/**
+ * Question 1.5
+ * one_away tells if strings are only 1 unit apart
+ * @param short_string
+ * @param long_string
+ * @return bool: true if only 1 difference/ false otherwise
+ */
+bool one_away (string& short_string, string& long_string) {
+    int ssl, lsl;
+    ssl = (int) short_string.length();
+    lsl = (int) long_string.length();
+
+    if (abs(lsl - ssl) > 1) return false;
+
+    string& sstring = ssl > lsl ? long_string : short_string;
+    string& lstring = ssl > lsl ? short_string : long_string;
+
+    int i = 0, j = 0;
+    bool diff = false;
+    while (i != sstring.length() && j != lstring.length()) {
+        if (sstring[i] != lstring[j]) {
+            if (diff) return false;
+            diff = true;
+
+            if (lsl == ssl) ++i;
+        }
+        else ++i;
+        ++j;
+    }
+
+    return true;
+}
+
+
+/**
+ * Question 1.6
+ * compressed_string gives a string with characters and count
+ * @param str: string to be compressed
+ * @return string: compressed string
+ */
+string compressed_string(string& str) {
+    int count = 0;
+    string compressed;
+
+    for (int i = 0; i != str.length(); ++i) {
+        ++count;
+        if ((i == str.length()) || (str[i] != str[i+1])) {
+            compressed.append(str[i] + to_string(count));
+            count = 0;
+        }
+    }
+
+    return compressed;
+}
+
 int main() {
     string str = "abcdefg";
     cout << "is_unique: " << is_unique(str) << '\n';
@@ -149,6 +205,12 @@ int main() {
 
     string palindrome_string = "Taco Cat";
     cout << "is_palindrome: " << is_palindrome(palindrome_string) << '\n';
+
+    string sstring = "pale", lstring = "bae";
+    cout << "one_away: " << one_away(lstring, sstring) << '\n';
+
+    string compress_string = "aabcccccaaa";
+    cout << "compressed: " << compressed_string(compress_string) << '\n';
 
     return 0;
 }
